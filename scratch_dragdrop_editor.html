@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Animal Company Drag & Drop Item Maker</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      color: #fff;
+    }
+
+    .light-mode {
+      background-color: #f0f0f0;
+      color: #000;
+    }
+
+    header {
+      padding: 16px;
+      background: #333;
+      color: white;
+      text-align: center;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    .palette, .slot {
+      flex: 1;
+      min-width: 280px;
+      padding: 16px;
+      border-radius: 10px;
+    }
+
+    .palette {
+      background: #222;
+    }
+
+    .slot {
+      background: #2d2d2d;
+    }
+
+    .light-mode .palette {
+      background: #ddd;
+    }
+
+    .light-mode .slot {
+      background: #e0e0e0;
+    }
+
+    .slot h3, .palette h3 {
+      margin-top: 0;
+    }
+
+    .block {
+      background: #4caf50;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      cursor: grab;
+    }
+
+    .light-mode .block {
+      background: #81c784;
+    }
+
+    .block input, .block select {
+      width: 100%;
+      margin-top: 5px;
+      padding: 4px;
+      border: none;
+      border-radius: 4px;
+    }
+
+    .drop-area {
+      min-height: 100px;
+      padding: 10px;
+      border: 2px dashed #888;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()">Toggle Dark/Light Mode</button>
+  <header>
+    <h1>Animal Company Drag-and-Drop Item Maker</h1>
+  </header>
+  <div class="container">
+    <div class="palette">
+      <h3>Block Palette</h3>
+      <div class="block" draggable="true" data-type="itemID">Item ID<br><select><option>None</option></select></div>
+      <div class="block" draggable="true" data-type="hue">Hue<br><input type="number" min="0" max="210" /></div>
+      <div class="block" draggable="true" data-type="saturation">Saturation<br><input type="number" min="0" max="120" /></div>
+      <div class="block" draggable="true" data-type="scaleModifier">Scale Modifier<br><input type="number" /></div>
+      <div class="block" draggable="true" data-type="state">State<br><input type="number" /></div>
+      <div class="block" draggable="true" data-type="ammo">Ammo<br><input type="number" /></div>
+    </div>
+
+    <div class="slot">
+      <h3>Left Hand</h3>
+      <div class="drop-area" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    </div>
+
+    <div class="slot">
+      <h3>Right Hand</h3>
+      <div class="drop-area" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    </div>
+
+    <div class="slot">
+      <h3>Back</h3>
+      <div class="drop-area" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    </div>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle("light-mode");
+    }
+
+    let dragged;
+
+    document.querySelectorAll(".palette .block").forEach(block => {
+      block.addEventListener("dragstart", (e) => {
+        dragged = block.cloneNode(true);
+        dragged.removeAttribute("draggable");
+      });
+    });
+
+    function allowDrop(e) {
+      e.preventDefault();
+    }
+
+    function drop(e) {
+      e.preventDefault();
+      if (dragged) {
+        e.target.appendChild(dragged);
+        dragged = null;
+      }
+    }
+  </script>
+</body>
+</html>
